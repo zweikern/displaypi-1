@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# ============================================================
+# pw — project-wiki CLI shortcut
+# ============================================================
+# Since 'project-wiki' is a directory, this script provides
+# the CLI entry point. Usage: ./pw update
+#
+# For the AI agent: calling 'project-wiki update' means
+# executing the update workflow defined in project-wiki/SCHEMA.md.
+# ============================================================
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WIKI_DIR="$SCRIPT_DIR/project-wiki"
+
+show_help() {
+    echo "pw — displaypi-1 project wiki CLI"
+    echo ""
+    echo "Usage: ./pw <command>"
+    echo ""
+    echo "Commands:"
+    echo "  update    Full wiki maintenance (ingest + lint + update)"
+    echo "  lint      Health check on all concept pages"
+    echo "  status    Wiki status overview"
+    echo "  help      This help"
+}
+
+show_status() {
+    local total
+    total=$(find "$WIKI_DIR/concepts" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+    local stale
+    stale=$(grep -rl "status: deprecated" "$WIKI_DIR/concepts" 2>/dev/null | wc -l | tr -d ' ')
+    local last
+    last=$(head -3 "$WIKI_DIR/log.md" 2>/dev/null | grep "^## " | head -1 | sed 's/^## //')
+
+    echo "=== project-wiki status ==="
+    echo "Concept pages: $total"
+    echo "Deprecated:    $stale"
+    echo "Last update:   ${last:-unknown}"
+}
+
+case "${1:-help}" in
+    update)
+        bash "$WIKI_DIR/scripts/update.sh"
+        ;;
+    lint)
+        echo "=== project-wiki lint ==="
+        echo "AI agent: run lint workflow per project-wiki/SCHEMA.md"
+        ;;
+    status)
+        show_status
+        ;;
+    help|--help|-h)
+        show_help
+        ;;
+    *)
+        echo "Unknown: ${1:-}"
+        show_help
+        exit 1
+        ;;
+esac
