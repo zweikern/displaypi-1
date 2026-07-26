@@ -33,10 +33,11 @@ sources:
 ## Elektrische Vorgaben
 
 1. Raspberry Pi **vor dem Verkabeln ausschalten**.
-2. Nur **3,3-V-Logik** verwenden.
-3. **Keine 5-V-Signale** an GPIO-Pins anlegen.
-4. GPIO 25 (DC) und GPIO 24 (RES) sind konfigurierbar.
-5. GPIO 8 (CS) = SPI0 CE0, Standard-Chip-Select.
+2. **VCC und GND korrekt polen!** ⚠️ Vertauschte VCC/GND führen zu fehlender SPI-Kommunikation (Display-ID = 0x00) und nur schwachem Backlight-Flackern. Nachweislich am 2026-07-26 aufgetreten.
+3. Nur **3,3-V-Logik** verwenden.
+4. **Keine 5-V-Signale** an GPIO-Pins anlegen.
+5. GPIO 25 (DC) und GPIO 24 (RES) sind konfigurierbar.
+6. GPIO 8 (CS) = SPI0 CE0, Standard-Chip-Select.
 
 ## SPI-Konfiguration
 
