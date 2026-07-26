@@ -1,0 +1,22 @@
+[Unit]
+Description=displaypi-1 Web Interface – Fog Controller
+After=network.target spi-devices.target
+
+[Service]
+Type=simple
+User={{USER}}
+WorkingDirectory=/home/{{USER}}/display-controller
+ExecStart=/home/{{USER}}/display-controller/.venv/bin/python web_server.py
+ExecStop=/bin/kill -SIGTERM $MAINPID
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=displaypi-1
+
+[Install]
+WantedBy=multi-user.target
