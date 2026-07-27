@@ -1,5 +1,8 @@
 # Project Wiki Update Log – displaypi-1
 
+## 2026-07-28
+- **OSC Mode**: ThreadingOSCUDPServer auf Port 7101. TouchDesigner/Mac kann Animationen triggern: `/displaypi-1/animation fog_loading|fog_ready|fog_active|off`, `/displaypi-1/fog on|off`, `/displaypi-1/mode local|osc`. Web-UI mit 🎮 Lokal / 📡 OSC Toggle — in OSC-Mode sind lokale Buttons deaktiviert.
+
 ## 2026-07-27
 - **Issue – WLAN**: Nach Neustart kein WLAN (wpa_supplicant.conf fehlte, nmcli-Passwort falsch). Fix: `nmcli device wifi connect "FRITZ!Box 6591 Cable DB" --ask` + `connection.autoconnect yes`. WLAN verbindet jetzt zuverlässig. IP fix auf 192.168.178.26 über Fritz!Box reserviert (MAC wlan0: `dc:a6:32:cd:32:09`). Ethernet (MAC `dc:a6:32:cd:32:08`) optional.
 - **systemd-Service**: displaypi-1.service läuft als Autostart, Port 5000.
