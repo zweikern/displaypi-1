@@ -2,7 +2,9 @@
 
 ## 2026-07-28
 - **OSC Mode**: ThreadingOSCUDPServer auf Port 7101. TouchDesigner/Mac kann Animationen triggern: `/displaypi-1/animation fog_loading|fog_ready|fog_active|off`, `/displaypi-1/fog on|off`, `/displaypi-1/mode local|osc`. Web-UI mit 🎮 Lokal / 📡 OSC Toggle — in OSC-Mode sind lokale Buttons deaktiviert.
-- **TouchDesigner Panel**: containerCOMP `/project1/osc_control` mit 2×4 Button-Raster (OSC Mode, Lokal Mode, Fog Loading/Ready/Active, Display Off, Fog ON/OFF). Buttons 120×80px, momentary, dispatch per executeDAT poll. OSC Out an 192.168.178.26:7101. End-to-End-Test erfolgreich.
+- **TouchDesigner Panel**: containerCOMP `/project1/osc_control` mit 2×4 Button-Raster (OSC Mode, Lokal Mode, Fog Loading, Fog Ready, Fog Active, Display Off, Fog ON, Fog OFF). 120×80px, momentary, dunkelblau. Netzwerk-Layout: 2×4 Grid + oscout1.
+- **OSC Dispatch (in Arbeit)**: executeDAT `poll` → textDAT `dispatch` (frameStart polling). Buttons visuell und klickbar, aber OSC-Trigger bei Button-Klick noch nicht zuverlässig. Direkter OSC-Versand per `oscout1.sendOSC()` aus Textport funktioniert zuverlässig. Ansätze getestet: executeDAT frameStart, chopexecDAT onValueChange, threading (nicht möglich wegen TD main-thread-only). Nächster Schritt: Dispatch stabilisieren oder HTTP-Fallback-API auf Pi einrichten.
+- **Issue – OSC Timeout**: OSC commands brauchen ~1s Abstand zwischen Mode-Switch und Animation — sonst wird zweiter Befehl ignoriert (mode=osc, status=idle statt animation).
 
 ## 2026-07-27
 - **Issue – WLAN**: Nach Neustart kein WLAN (wpa_supplicant.conf fehlte, nmcli-Passwort falsch). Fix: `nmcli device wifi connect "FRITZ!Box 6591 Cable DB" --ask` + `connection.autoconnect yes`. WLAN verbindet jetzt zuverlässig. IP fix auf 192.168.178.26 über Fritz!Box reserviert (MAC wlan0: `dc:a6:32:cd:32:09`). Ethernet (MAC `dc:a6:32:cd:32:08`) optional.
